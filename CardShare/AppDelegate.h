@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "Card.h"
+
+extern NSString *const kServiceType;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -15,6 +18,9 @@
 @property (strong, nonatomic) NSMutableArray *cards;
 @property (strong, nonatomic) Card *myCard;
 @property (strong, nonatomic) NSMutableArray *otherCards;
+
+@property (strong, nonatomic) MCSession *session;
+@property (strong, nonatomic) MCPeerID *peerId;
 
 - (void) addToOtherCardsList:(Card *)card;
 - (void) removeCardFromExchangeList:(Card *)card;

@@ -8,7 +8,11 @@
 
 #import "AppDelegate.h"
 
+NSString *const kServiceType = @"rw-cardshare";
+
 @interface AppDelegate ()
+
+@property (strong, nonatomic) MCAdvertiserAssistant *advertiserAssistant;
 
 @end
 
@@ -43,6 +47,30 @@
         self.otherCards = (NSMutableArray *)[NSKeyedUnarchiver unarchiveObjectWithData:otherCardsData];
     }
     
+    // 1
+    /**
+     *  First, initialize an MCPeerID object with a peer display name, which is either the first name on the user's business card if available, or alternatively the device name itself. It's best to keep the display name as short as possible.
+     */
+    NSString *peerName = self.myCard.firstName ? self.myCard.firstName : [[UIDevice currentDevice] name];
+    self.peerId = [[MCPeerID alloc] initWithDisplayName:peerName];
+    
+    // 2
+    /**
+     *  init the session
+     */
+    self.session = [[MCSession alloc] initWithPeer:self.peerId
+                                  securityIdentity:nil encryptionPreference:MCEncryptionNone];
+    self.session.delegate = nil;
+    
+    // 3
+    /**
+     *  initialize the MCAdvertiserAssistant object
+     */
+    self.advertiserAssistant = [[MCAdvertiserAssistant alloc] initWithServiceType:kServiceType
+                                                                    discoveryInfo:nil session:self.session];
+    
+    // 4
+    [self.advertiserAssistant start];
     return YES;
 }
 

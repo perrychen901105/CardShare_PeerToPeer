@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>78BB4E4B-1CB7-4077-A889-9D16ABAA99DC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>CardShare</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D790A232-6273-41FC-9383-86F0DDBC2DA0</key>
+		<string>https://github.com/perrychen901105/CardShare_PeerToPeer</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>CardShare.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D790A232-6273-41FC-9383-86F0DDBC2DA0</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/perrychen901105/CardShare_PeerToPeer</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D790A232-6273-41FC-9383-86F0DDBC2DA0</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D790A232-6273-41FC-9383-86F0DDBC2DA0</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CardShare_PeerToPeer</string>
+		</dict>
+	</array>
+</dict>
+</plist>

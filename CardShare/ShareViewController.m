@@ -13,7 +13,7 @@
 #import "SingleCardViewController.h"
 
 @interface ShareViewController ()
-<UITableViewDataSource, UITableViewDelegate>
+<UITableViewDataSource, UITableViewDelegate, MCBrowserViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *emptyAddButton;
@@ -64,6 +64,13 @@
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil]
          show];
+    } else {
+        MCBrowserViewController *browserViewController = [[MCBrowserViewController alloc] initWithServiceType:kServiceType session:delegate.session];
+        [self updateUIBarDisplay:browserViewController.view];
+        browserViewController.delegate = self;
+        [self presentViewController:browserViewController
+                           animated:YES
+                         completion:nil];
     }
 }
 
@@ -74,6 +81,16 @@
         singleCardViewController.card = self.selectedCard;
         singleCardViewController.enableAddToCards = YES;
     }
+}
+
+- (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
+{
+    [browserViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController
+{
+    [browserViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UITableView delegate and datasource methods
