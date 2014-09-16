@@ -436,7 +436,7 @@
 				GCC_PREFIX_HEADER = "CardShare/CardShare-Prefix.pch";
 				INFOPLIST_FILE = "CardShare/CardShare-Info.plist";
 				PRODUCT_NAME = CardShare;
-				PROVISIONING_PROFILE = "8873aa81-e2e4-4b21-b8dc-6ba0c76049f1";
+				PROVISIONING_PROFILE = "6530b4ed-5f47-4f6f-a96d-844d2201cbbc";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -451,7 +451,7 @@
 				GCC_PREFIX_HEADER = "CardShare/CardShare-Prefix.pch";
 				INFOPLIST_FILE = "CardShare/CardShare-Info.plist";
 				PRODUCT_NAME = CardShare;
-				PROVISIONING_PROFILE = "8873aa81-e2e4-4b21-b8dc-6ba0c76049f1";
+				PROVISIONING_PROFILE = "6530b4ed-5f47-4f6f-a96d-844d2201cbbc";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -69,15 +69,34 @@ typedef void(^InvitationHandler) (BOOL accept, MCSession *session);
                                   securityIdentity:nil encryptionPreference:MCEncryptionNone];
     self.session.delegate = self;
     
-    // 3
-    /**
-     *  initialize the MCAdvertiserAssistant object
-     */
-    self.advertiserAssistant = [[MCAdvertiserAssistant alloc] initWithServiceType:kServiceType
-                                                                    discoveryInfo:nil session:self.session];
     
-    // 4
-    [self.advertiserAssistant start];
+    if (kProgrammaticDiscovery) {
+        // 1
+        /**
+         *  initializes the advertiser with a peer, a nil for the discoveryInfo parameter and the serviceType identifier for the service being provided.Remember only browsers searching for a service with the same identifer will see this advisier.
+         */
+        self.advertiser = [[MCNearbyServiceAdvertiser alloc] initWithPeer:self.peerId discoveryInfo:nil serviceType:kServiceType];
+        // 2
+        /**
+         *  sets the advertiser's delegate to the app delegate.
+         */
+        self.advertiser.delegate = self;
+        // 3
+        /**
+         *  calls startAdvertisingPeer to commence the process of adverising this service.
+         */
+        [self.advertiser startAdvertisingPeer];
+    } else {
+        // 3
+        /**
+         *  initialize the MCAdvertiserAssistant object
+         */
+        self.advertiserAssistant = [[MCAdvertiserAssistant alloc] initWithServiceType:kServiceType
+                                                                        discoveryInfo:nil session:self.session];
+        
+        // 4
+        [self.advertiserAssistant start];
+    }
     return YES;
 }
 
@@ -107,6 +126,21 @@ typedef void(^InvitationHandler) (BOOL accept, MCSession *session);
 {
     
 }
+
+#pragma mark - Programmer
+- (void)advertiser:(MCNearbyServiceAdvertiser *)advertiser didReceiveInvitationFromPeer:(MCPeerID *)peerID withContext:(NSData *)context invitationHandler:(void (^)(BOOL, MCSession *))invitationHandler
+{
+    self.handler = invitationHandler;
+    [[[UIAlertView alloc] initWithTitle:@"Invitation"
+                                message:[NSString stringWithFormat:@"%@ wants to connect", peerID.displayName] delegate:self cancelButtonTitle:@"Nope" otherButtonTitles:@"Sure", nil] show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    BOOL accept = (buttonIndex == alertView.cancelButtonIndex) ? NO : YES;
+    self.handler(accept, self.session);
+}
+
 
 #pragma mark - Helper methods
 - (void)sendCardToPeer
