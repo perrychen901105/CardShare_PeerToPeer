@@ -9,10 +9,17 @@
 #import "AppDelegate.h"
 
 NSString *const kServiceType = @"rw-cardshare";
+NSString *const DataReceivedNotification = @"com.razeware.apps.CardShare:DataReceivedNotification";
+BOOL const kProgrammaticDiscovery = YES;
 
-@interface AppDelegate ()
+typedef void(^InvitationHandler) (BOOL accept, MCSession *session);
+
+@interface AppDelegate () <MCSessionDelegate, MCNearbyServiceAdvertiserDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) MCAdvertiserAssistant *advertiserAssistant;
+
+@property (strong, nonatomic) MCNearbyServiceAdvertiser *advertiser;
+@property (copy, nonatomic) InvitationHandler handler;
 
 @end
 
@@ -60,7 +67,7 @@ NSString *const kServiceType = @"rw-cardshare";
      */
     self.session = [[MCSession alloc] initWithPeer:self.peerId
                                   securityIdentity:nil encryptionPreference:MCEncryptionNone];
-    self.session.delegate = nil;
+    self.session.delegate = self;
     
     // 3
     /**
@@ -74,7 +81,41 @@ NSString *const kServiceType = @"rw-cardshare";
     return YES;
 }
 
+- (void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
+{
+    Card *card = (Card *)[NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self.cards addObject:card];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DataReceivedNotification object:nil];
+}
+
+- (void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID
+{
+    
+}
+
+- (void)session:(MCSession *)session didFinishReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID atURL:(NSURL *)localURL withError:(NSError *)error
+{
+    
+}
+
+- (void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress
+{
+    
+}
+
+- (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state
+{
+    
+}
+
 #pragma mark - Helper methods
+- (void)sendCardToPeer
+{
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:self.myCard];
+    NSError *error;
+    [self.session sendData:data toPeers:[self.session connectedPeers] withMode:MCSessionSendDataReliable error:&error];
+}
+
 - (UIColor *)mainColor
 {
     return [UIColor colorWithRed:28/255.0f green:171/255.0f blue:116/255.0f alpha:1.0f];

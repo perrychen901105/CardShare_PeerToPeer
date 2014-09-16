@@ -10,7 +10,10 @@
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "Card.h"
 
+extern NSString *const DataReceivedNotification;
 extern NSString *const kServiceType;
+
+extern BOOL const kProgrammaticDiscovery;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -25,5 +28,7 @@ extern NSString *const kServiceType;
 - (void) addToOtherCardsList:(Card *)card;
 - (void) removeCardFromExchangeList:(Card *)card;
 - (UIColor *) mainColor;
+
+- (void)sendCardToPeer;
 
 @end

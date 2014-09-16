@@ -431,11 +431,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei zhou (6XNV3B3N8E)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CardShare/CardShare-Prefix.pch";
 				INFOPLIST_FILE = "CardShare/CardShare-Info.plist";
 				PRODUCT_NAME = CardShare;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "8873aa81-e2e4-4b21-b8dc-6ba0c76049f1";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -445,11 +446,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer: wei zhou (6XNV3B3N8E)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CardShare/CardShare-Prefix.pch";
 				INFOPLIST_FILE = "CardShare/CardShare-Info.plist";
 				PRODUCT_NAME = CardShare;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "8873aa81-e2e4-4b21-b8dc-6ba0c76049f1";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

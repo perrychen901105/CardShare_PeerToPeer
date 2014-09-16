@@ -29,6 +29,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(dataReceived:) name:DataReceivedNotification
+                                               object:nil];
 	// Do any additional setup after loading the view, typically from a nib.
 
 }
@@ -36,6 +40,8 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     // Release any retained subviews of the main view.
 
 }
@@ -49,7 +55,20 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self dataReceived:nil];
+}
+
+- (void)dataReceived:(NSNotification *)notification
+{
     [self showHideNoDataView];
+    [self.tableView reloadData];
+}
+
+- (void)sendCard
+{
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [delegate sendCardToPeer];
+    [self showMessage:@"Card sent to nearby device"];
 }
 
 #pragma mark - Action methods
@@ -65,12 +84,16 @@
                           otherButtonTitles:nil]
          show];
     } else {
-        MCBrowserViewController *browserViewController = [[MCBrowserViewController alloc] initWithServiceType:kServiceType session:delegate.session];
-        [self updateUIBarDisplay:browserViewController.view];
-        browserViewController.delegate = self;
-        [self presentViewController:browserViewController
-                           animated:YES
-                         completion:nil];
+        if ([[delegate.session connectedPeers] count] == 0) {
+            MCBrowserViewController *browserViewController = [[MCBrowserViewController alloc] initWithServiceType:kServiceType session:delegate.session];
+            [self updateUIBarDisplay:browserViewController.view];
+            browserViewController.delegate = self;
+            [self presentViewController:browserViewController
+                               animated:YES
+                             completion:nil];
+        } else {
+            [self sendCard];
+        }
     }
 }
 
@@ -85,7 +108,9 @@
 
 - (void)browserViewControllerDidFinish:(MCBrowserViewController *)browserViewController
 {
-    [browserViewController dismissViewControllerAnimated:YES completion:nil];
+    [browserViewController dismissViewControllerAnimated:YES completion:^{
+        [self sendCard];
+    }];
 }
 
 - (void)browserViewControllerWasCancelled:(MCBrowserViewController *)browserViewController
