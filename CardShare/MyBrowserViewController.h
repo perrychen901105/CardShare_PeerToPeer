@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MultipeerConnectivity/MultipeerConnectivity.h>
 
 @protocol MyBrowserViewControllerDelegate;
 
@@ -15,6 +16,9 @@
 @property (nonatomic, weak, readwrite) id<MyBrowserViewControllerDelegate> delegate;
 @property(nonatomic, assign) NSUInteger maximumNumberOfPeers;
 @property(nonatomic, assign) NSUInteger minimumNumberOfPeers;
+
+- (void)setupWithServiceType:(NSString *)serviceType session:(MCSession *)session peer:(MCPeerID *)peerId;
+
 
 @end
 
@@ -27,5 +31,6 @@
 
 - (void)myBrowserViewControllerWasCancelled:(MyBrowserViewController *)browserViewController;
 // Called when the user taps the Cancel button
+
 
 @end

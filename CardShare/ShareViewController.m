@@ -11,9 +11,11 @@
 #import "MyBrowserViewController.h"
 #import "Card.h"
 #import "SingleCardViewController.h"
+#import "MyBrowserViewController.h"
+
 
 @interface ShareViewController ()
-<UITableViewDataSource, UITableViewDelegate, MCBrowserViewControllerDelegate>
+<UITableViewDataSource, UITableViewDelegate, MCBrowserViewControllerDelegate, MyBrowserViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIButton *emptyAddButton;
@@ -71,6 +73,19 @@
     [self showMessage:@"Card sent to nearby device"];
 }
 
+#pragma mark - my browser methods
+- (void)myBrowserViewControllerDidFinish:(MyBrowserViewController *)browserViewController
+{
+    [browserViewController dismissViewControllerAnimated:YES completion:^{
+        [self sendCard];
+    }];
+}
+
+- (void)myBrowserViewControllerWasCancelled:(MyBrowserViewController *)browserViewController
+{
+    [browserViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Action methods
 - (IBAction)addCardPressed:(id)sender {
     AppDelegate *delegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -85,12 +100,16 @@
          show];
     } else {
         if ([[delegate.session connectedPeers] count] == 0) {
-            MCBrowserViewController *browserViewController = [[MCBrowserViewController alloc] initWithServiceType:kServiceType session:delegate.session];
-            [self updateUIBarDisplay:browserViewController.view];
-            browserViewController.delegate = self;
-            [self presentViewController:browserViewController
-                               animated:YES
-                             completion:nil];
+            if (kProgrammaticDiscovery) {
+                [self performSegueWithIdentifier:@"SegueToMyBrowser" sender:self];
+            } else {
+                MCBrowserViewController *browserViewController = [[MCBrowserViewController alloc] initWithServiceType:kServiceType session:delegate.session];
+                [self updateUIBarDisplay:browserViewController.view];
+                browserViewController.delegate = self;
+                [self presentViewController:browserViewController
+                                   animated:YES
+                                 completion:nil];
+            }
         } else {
             [self sendCard];
         }
@@ -99,6 +118,12 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    if ([segue.identifier isEqualToString:@"SegueToMyBrowser"]) {
+        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        MyBrowserViewController *browserViewController = (MyBrowserViewController *)segue.destinationViewController;
+        [browserViewController setupWithServiceType:kServiceType session:delegate.session peer:delegate.peerId];
+        browserViewController.delegate = self;
+    }
     if ([segue.identifier isEqualToString:@"SegueToCardDetail"]) {
         SingleCardViewController *singleCardViewController = (SingleCardViewController *)segue.destinationViewController;
         singleCardViewController.card = self.selectedCard;

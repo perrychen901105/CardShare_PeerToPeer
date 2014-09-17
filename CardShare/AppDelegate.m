@@ -10,6 +10,7 @@
 
 NSString *const kServiceType = @"rw-cardshare";
 NSString *const DataReceivedNotification = @"com.razeware.apps.CardShare:DataReceivedNotification";
+NSString *const PeerConnectionAcceptedNotification = @"com.razeware.apps.CardShare:PeerConnectionAcceptedNotification";
 BOOL const kProgrammaticDiscovery = YES;
 
 typedef void(^InvitationHandler) (BOOL accept, MCSession *session);
@@ -124,7 +125,13 @@ typedef void(^InvitationHandler) (BOOL accept, MCSession *session);
 
 - (void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state
 {
-    
+    if (state == MCSessionStateConnected && self.session) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PeerConnectionAcceptedNotification object:nil userInfo:@{@"peer": peerID, @"accept": @YES}];
+    } else if (state == MCSessionStateNotConnected && self.session) {
+        if (![self.session.connectedPeers containsObject:peerID]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:PeerConnectionAcceptedNotification object:nil userInfo:@{@"peer": peerID, @"accept": @NO}];
+        }
+    }
 }
 
 #pragma mark - Programmer

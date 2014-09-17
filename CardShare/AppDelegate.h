@@ -13,6 +13,8 @@
 extern NSString *const DataReceivedNotification;
 extern NSString *const kServiceType;
 
+extern NSString *const PeerConnectionAcceptedNotification;
+
 extern BOOL const kProgrammaticDiscovery;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
